@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1f2a37">
+  <title>線上預約</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <h1 id="shopName">線上預約</h1>
+    <p>一個時段服務一位客人,選好時間就完成預約</p>
+  </header>
+
+  <nav class="tabs" id="tabs" hidden>
+    <button type="button" data-tab="book" class="active">預約</button>
+    <button type="button" data-tab="mine">我的預約<span id="mineCount" class="badge" hidden></span></button>
+    <button type="button" data-tab="admin" id="adminTabBtn" hidden>預約總覽</button>
+  </nav>
+
+  <main>
+    <div id="loading" class="loading"><div class="spinner"></div><p>載入中…</p></div>
+    <div id="fatal" class="fatal" hidden>
+      <p id="fatalMsg"></p>
+      <button type="button" id="fatalRetry" class="primary">重新載入</button>
+    </div>
+
+    <section id="tab-book" class="tab" hidden>
+      <h2 class="step">1. 選日期</h2>
+      <div id="dates" class="dates"></div>
+
+      <h2 class="step">2. 選時段</h2>
+      <div id="slots" class="slots"></div>
+
+      <form id="form" class="card" hidden novalidate>
+        <h2 class="step">3. 填寫資料</h2>
+        <p id="picked" class="picked"></p>
+        <label class="check" id="proxyRow" hidden>
+          <input type="checkbox" id="proxy"> 代客預約(電話或現場客人,不綁定我的 LINE)
+        </label>
+        <label>姓名
+          <input id="name" maxlength="20" autocomplete="name" required>
+        </label>
+        <label>手機或電話
+          <input id="phone" type="tel" inputmode="tel" maxlength="13" autocomplete="tel" placeholder="0912345678" required>
+        </label>
+        <button type="submit" id="submitBtn" class="primary">確認預約</button>
+      </form>
+    </section>
+
+    <section id="tab-mine" class="tab" hidden>
+      <div id="mineList"></div>
+      <p class="hint" id="cancelHint"></p>
+    </section>
+
+    <section id="tab-admin" class="tab" hidden>
+      <div class="toolbar">
+        <span id="adminSummary"></span>
+        <button type="button" id="adminRefresh" class="ghost">重新整理</button>
+      </div>
+      <div id="adminList"></div>
+    </section>
+  </main>
+
+  <footer id="footer" hidden>
+    <button type="button" id="showId" class="link">顯示我的 LINE ID</button>
+    <div id="myId" class="my-id" hidden></div>
+  </footer>
+
+  <div id="modal" class="modal" hidden>
+    <div class="modal-box" role="dialog" aria-modal="true">
+      <div id="modalBody"></div>
+      <div id="modalActions" class="modal-actions"></div>
+    </div>
+  </div>
+
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js" charset="utf-8"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
