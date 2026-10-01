@@ -140,8 +140,9 @@
     $('proxyRow').hidden = !d.isAdmin;
 
     var day = findDay(state.date);
-    if (!day) {
-      day = d.days.filter(function (x) { return openCount(x) > 0; })[0] || d.days[0];
+    if (!day || day.closed) {
+      day = d.days.filter(function (x) { return openCount(x) > 0; })[0] ||
+        d.days.filter(function (x) { return !x.closed; })[0];
       state.date = day ? day.date : null;
     }
     var slot = day && day.slots.filter(function (s) { return s.time === state.time; })[0];
@@ -182,17 +183,23 @@
 
   function renderDates() {
     var days = state.data.days;
-    if (!days.length) {
+    if (!days.some(function (d) { return !d.closed; })) {
       $('dates').innerHTML = '<p class="empty">近期沒有開放預約的日期</p>';
       return;
     }
     $('dates').innerHTML = days.map(function (d) {
-      var n = openCount(d);
       var p = d.date.split('-');
+      var md = '<span class="wd">週' + d.weekday + '</span>' +
+        '<span class="md">' + Number(p[1]) + '/' + Number(p[2]) + '</span>';
+      if (d.closed) {
+        // 休息日:保留選項但不能選,日期劃掉
+        return '<button type="button" class="date closed" disabled' +
+          (d.note ? ' title="' + esc(d.note) + '"' : '') + '>' + md +
+          '<span class="left">' + esc(d.reason) + '</span></button>';
+      }
+      var n = openCount(d);
       return '<button type="button" class="date' + (d.date === state.date ? ' selected' : '') + (n ? '' : ' full') +
-        '" data-date="' + d.date + '">' +
-        '<span class="wd">週' + d.weekday + '</span>' +
-        '<span class="md">' + Number(p[1]) + '/' + Number(p[2]) + '</span>' +
+        '" data-date="' + d.date + '">' + md +
         '<span class="left">' + (n ? '剩 ' + n : '已滿') + '</span></button>';
     }).join('');
     var sel = $('dates').querySelector('.selected');
@@ -201,7 +208,7 @@
 
   $('dates').addEventListener('click', function (e) {
     var b = e.target.closest('button[data-date]');
-    if (!b || state.busy) return;
+    if (!b || b.disabled || state.busy) return;
     state.date = b.dataset.date;
     state.time = null;
     renderDates();
