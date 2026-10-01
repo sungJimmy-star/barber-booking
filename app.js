@@ -214,7 +214,7 @@
       $('slots').innerHTML = '';
       return;
     }
-    var label = { open: '可預約', taken: '已約滿', past: '已截止' };
+    var label = { open: '可預約', taken: '已約滿', past: '已截止', full: '當日額滿' };
     $('slots').innerHTML = day.slots.map(function (s) {
       return '<button type="button" class="slot ' + s.status + (s.time === state.time ? ' selected' : '') +
         '" data-time="' + s.time + '"' + (s.status === 'open' ? '' : ' disabled') + '>' +
