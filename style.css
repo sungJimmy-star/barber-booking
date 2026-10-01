@@ -58,7 +58,8 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
   padding: 20px 16px 16px;
 }
 .top h1 { margin: 0; font-size: 22px; letter-spacing: .05em; }
-.top p { margin: 4px 0 0; font-size: 13px; opacity: .75; }
+.top p { margin: 4px 0 0; font-size: 13px; opacity: .75; white-space: pre-line; }
+.top p:empty { display: none; }
 
 .tabs {
   position: sticky;

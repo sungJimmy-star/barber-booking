@@ -134,6 +134,7 @@
   function apply(data) {
     var d = state.data = Object.assign(state.data || {}, data);
     $('shopName').textContent = d.shopName;
+    $('tagline').textContent = d.tagline || '';
     document.title = d.shopName + ' 線上預約';
     $('adminTabBtn').hidden = !d.isAdmin;
     $('proxyRow').hidden = !d.isAdmin;
